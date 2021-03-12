@@ -5,6 +5,7 @@ using Model;
 namespace API.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class TaskController : Controller
     {
         [HttpGet]
