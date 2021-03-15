@@ -5,7 +5,6 @@ pipeline {
             steps {
                 echo "===== OPTIONAL: Will build the website (if needed) ====="
             }
-            // 
         }
         stage("Build API") {
             steps {
@@ -31,13 +30,11 @@ pipeline {
             steps {
                 echo "===== REQUIRED: Will deliver the API to Docker Hub ====="
             }
-            // 
         }
         stage("Release staging environment") {
             steps {
                 echo "===== REQUIRED: Will use Docker Compose to spin up a test environment ====="
             }
-            // 
         }
         stage("Automated acceptance test") {
             steps {
