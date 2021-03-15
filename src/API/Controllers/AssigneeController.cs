@@ -7,26 +7,19 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TaskController : Controller
+    public class AssigneeController : Controller
     {
         [HttpGet]
-        public IEnumerable<Task> Get()
+        public IEnumerable<Assignee> Get()
         {
             throw new NotImplementedException();
         }
         
         [HttpPost]
-        public int Post(Task task)
+        public int Post(Assignee task)
         {
             throw new NotImplementedException();
         }
-        
-        [HttpPut]
-        public void Put(Task task)
-        {
-            throw new NotImplementedException();
-        }
-        
         
         [HttpDelete]
         public void Delete(int id)
