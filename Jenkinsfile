@@ -2,28 +2,47 @@ pipeline {
     agent any
     stages {
         stage("Build Web") {
-            // Will build the website (if needed)
+            steps {
+                echo "===== OPTIONAL: Will build the website (if needed) ====="
+            }
+            // 
         }
         stage("Build API") {
-            // Will build the API project
+            steps {
+                echo "===== REQUIRED: Will build the API project ====="
+            }
         }
         stage("Build database") {
-            // Will build the database (if using a state-based approach)
+            steps {
+                echo "===== OPTIONAL: Will build the database (if using a state-based approach) ====="
+            }
         }
         stage("Test API") {
-            // Will execute unit tests of the API project
+            steps {
+                echo "===== REQUIRED: Will execute unit tests of the API project ====="
+            }
         }
         stage("Deliver Web") {
-            // Will deliver the website to Docker Hub
+            steps {
+                echo "===== REQUIRED: Will deliver the website to Docker Hub ====="
+            }
         }
         stage("Deliver API") {
-            // Will deliver the API to Docker Hub
+            steps {
+                echo "===== REQUIRED: Will deliver the API to Docker Hub ====="
+            }
+            // 
         }
         stage("Release staging environment") {
-            // Will use Docker Compose to spin up a test environment.
+            steps {
+                echo "===== REQUIRED: Will use Docker Compose to spin up a test environment ====="
+            }
+            // 
         }
         stage("Automated acceptance test") {
-            // Will use Selenium to execute automatic acceptance tests.
+            steps {
+                echo "===== REQUIRED: Will use Selenium to execute automatic acceptance tests ====="
+            }
         }
     }
 }
