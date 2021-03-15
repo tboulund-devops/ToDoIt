@@ -7,5 +7,8 @@ namespace DAL
     {
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Assignee> Assignees { get; set; }
+
+        public TodoContext(DbContextOptions<TodoContext> config) : base(config)
+        { }
     }
 }

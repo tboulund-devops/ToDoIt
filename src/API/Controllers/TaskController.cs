@@ -10,7 +10,7 @@ namespace API.Controllers
     public class TaskController : Controller
     {
         [HttpGet]
-        public IEnumerable<Task> Get()
+        public IEnumerable<Task> Get(string searchTerm)
         {
             throw new NotImplementedException();
         }
