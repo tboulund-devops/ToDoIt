@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage("Build Web") {
             steps {
-                "dotnet build src/WebUI/WebUI/csproj"
+                "dotnet build src/WebUI/WebUI.csproj"
             }
         }
         stage("Build API") {
