@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage("Build Web") {
             steps {
-                echo "===== OPTIONAL: Will build the website (if needed) ====="
+                "dotnet build src/WebUI/WebUI/csproj"
             }
         }
         stage("Build API") {
             steps {
-                sh "dotnet build src/Todoit.sln"
+                sh "dotnet build src/API/API.csproj"
             }
         }
         stage("Build database") {
