@@ -27,28 +27,22 @@ pipeline {
         }
         stage("Deliver Web") {
             steps {
-                steps
-				{
 					sh "docker build . -t gruppe1devops/todoit-webui"
 					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
 					{
 						sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 					}
 					sh "docker push gruppe1devops/todoit-webui"
-				}
             }
         }
         stage("Deliver API") {
             steps {
-                steps
-				{
 					sh "docker build . -t gruppe1devops/todoit-webapi"
-					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
 					{
 						sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 					}
 					sh "docker push gruppe1devops/todoit-webapi"
-				}
             }
         }
         stage("Release staging environment") {
