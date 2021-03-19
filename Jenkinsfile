@@ -1,5 +1,9 @@
 pipeline {
     agent any
+	triggers {
+		cron 'H * * * *'
+		pollSCM 'H/3 * * * *'
+	}
     stages {
         stage("Build Web") {
             steps {
@@ -8,7 +12,7 @@ pipeline {
         }
         stage("Build API") {
             steps {
-                echo "===== REQUIRED: Will build the API project ====="
+                sh "dotnet build src/Todoit.sln"
             }
         }
         stage("Build database") {
@@ -18,7 +22,7 @@ pipeline {
         }
         stage("Test API") {
             steps {
-                echo "===== REQUIRED: Will execute unit tests of the API project ====="
+                sh "dotnet test test/UnitTest/UnitTest.csproj"
             }
         }
         stage("Deliver Web") {
