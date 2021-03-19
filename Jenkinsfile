@@ -30,7 +30,7 @@ pipeline {
                 steps
 				{
 					sh "docker build . -t gruppe1devops/todoit-webui"
-					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+					withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
 					{
 						sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 					}
