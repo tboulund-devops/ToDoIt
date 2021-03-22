@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 
@@ -9,22 +11,66 @@ namespace API.Controllers
     [Route("[controller]")]
     public class AssigneeController : Controller
     {
+        private readonly IAssigneeService _assigneeService;
+
+        public AssigneeController(IAssigneeService assigneeService)
+        {
+            _assigneeService = assigneeService;
+        }
         [HttpGet]
-        public IEnumerable<Assignee> Get()
+        public ActionResult Get([FromQuery] int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if((id > 0))
+                {
+                    return Ok((_assigneeService.ReadById(id)));
+                }
+
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
-        
+
         [HttpPost]
-        public int Post(Assignee task)
+        public ActionResult Post([FromBody] String name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (name != null)
+                {
+                    return Ok(_assigneeService.CreateAssignee(name));
+                }
+
+                return BadRequest();
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
-        
+
         [HttpDelete]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id > 0)
+                {
+                    return Ok(_assigneeService.DeleteAssignee(id));
+                }
+
+               
+            }
+            catch (Exception e)
+            {
+                StatusCode(500, e.Message);
+            }
+            return BadRequest();
         }
     }
 }

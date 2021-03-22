@@ -11,7 +11,7 @@ namespace DAL
         public TodoContext()
         { }
 
-        public TodoContext(DbContextOptions<TodoContext> config) : base(config)
+        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
         { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
