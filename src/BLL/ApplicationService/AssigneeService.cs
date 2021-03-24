@@ -31,7 +31,7 @@ namespace BLL
         public Assignee DeleteAssignee(int id)
         {
 
-            if (id == null || id <= 0)
+            if (id <= 0)
                 throw new ArgumentNullException("id cannot be null or negative");
 
             return _assigneeRepository.DeleteAssignee(id);
@@ -50,7 +50,7 @@ namespace BLL
         public Assignee UpdateAssignee(int id)
         {
 
-            if (id == null || id <= 0)
+            if ( id <= 0)
                 throw new ArgumentNullException("id cannot be null or negative");
 
             return _assigneeRepository.UpdateAssignee(id);
