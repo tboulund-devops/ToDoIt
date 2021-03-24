@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Model;
+using Nest;
 
 namespace API.Controllers
 {
@@ -9,29 +11,82 @@ namespace API.Controllers
     [Route("[controller]")]
     public class TaskController : Controller
     {
-        [HttpGet]
-        public IEnumerable<Task> Get(string searchTerm)
+        private readonly ITaskService _taskService;
+
+        public TaskController(ITaskService taskService)
         {
-            throw new NotImplementedException();
+            _taskService = taskService;
+        }
+        [HttpGet]
+        public ActionResult<Task> Get([FromQuery]int id)
+        {
+            try
+            {
+                if ((id > 0))
+                {
+                    return Ok(_taskService.ReadTaskById(id));
+                }
+
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
         
         [HttpPost]
-        public int Post(Task task)
+        public ActionResult <Task>Post([FromBody]Task task)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (task.Description == null)
+                {
+                    return StatusCode(100, $"description cannot be null" );
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return task;
         }
-        
-        [HttpPut]
-        public void Put(Task task)
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Task>> Get()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Ok(_taskService.ReadAllTasks());
+            }
+            catch (Exception e)
+
+            {
+                return BadRequest($"cannot read all workSpacePosters");
+            }
         }
-        
-        
+
+
         [HttpDelete]
-        public void Delete(int id)
+        public ActionResult  Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id > 0)
+                {
+                    return Ok(_taskService.DeleteTask(id));
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                StatusCode(500, e.Message);
+            }
+            return BadRequest();
         }
     }
 }

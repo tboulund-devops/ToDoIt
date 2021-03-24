@@ -49,7 +49,7 @@ namespace DAL
 
         public Assignee ReadById(int id)
         {
-            return _ctx.Assignee.AsNoTracking();
+            return _ctx.Assignees.FirstOrDefault();
         }
 
         public Assignee UpdateAssignee(int id)

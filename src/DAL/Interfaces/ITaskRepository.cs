@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Model;
+
 
 namespace DAL.Interfaces
 {
     public interface ITaskRepository
     {
-        // just to test pull and push
+        Task CreateTask(Task task);
+        Task ReadTaskById(int id);
+        IEnumerable<Task> ReadAllTasks();
+        Task UpdateTask(int id, DateTime dueDate);
+        Task DeleteTask(int id);
     }
 }
