@@ -23,68 +23,50 @@ namespace API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Environment = env;
+            //Environment = env;
         }
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
+        //public IWebHostEnvironment Environment { get; }
 
        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
-            if (Environment.IsDevelopment())
+
+
+            services.AddDbContext<TodoContext>(b => b
+                .UseSqlServer(Environment.GetEnvironmentVariable("DatabaseConnectionString"))
+                .LogTo(Console.WriteLine));
+
+
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "API", Version = "v1"}); });
+
+            services.AddScoped<IAssigneeRepository, AssigneeRepository>();
+            services.AddScoped<IAssigneeService, AssigneeService>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddTransient<DataInit>();
+
+            services.AddCors(options =>
+                options.AddDefaultPolicy(
+                    builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); })
+            );
+
+            services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers().AddNewtonsoftJson(options =>
             {
-                services.AddDbContext<TodoContext>(
-                    opt =>
-                    {
-                        opt.UseLoggerFactory(loggerFactory); //logs all sql queries.
+                // Use the default property (Pascal) casing
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.MaxDepth = 5;
+            });
 
-                        opt.UseSqlite("Data Source= ToDoIt");
-                    });
-            }
-            else
-            {
-                services.AddDbContext<TodoContext>
-                (opt =>
-                {
-                    opt.UseLoggerFactory(loggerFactory); //logs all sql queries.
 
-                    opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection"));
-                });
-                //    services.AddDbContext<TodoContext>(b => b
-                //        .UseSqlServer(Environment.GetEnvironmentVariable("DatabaseConnectionString"))
-                //        .LogTo(Console.WriteLine)
-                //}
-
-                services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "API", Version = "v1"}); });
-
-                services.AddScoped<IAssigneeRepository, AssigneeRepository>();
-                services.AddScoped<IAssigneeService, AssigneeService>();
-                services.AddScoped<ITaskRepository, TaskRepository>();
-                services.AddScoped<ITaskService, TaskService>();
-                services.AddTransient<DataInit>();
-
-                services.AddCors(options =>
-                    options.AddDefaultPolicy(
-                        builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); })
-                );
-
-                services.AddControllers();
-                services.AddMvc().AddNewtonsoftJson();
-                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-                services.AddControllers().AddNewtonsoftJson(options =>
-                {
-                    // Use the default property (Pascal) casing
-                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    options.SerializerSettings.MaxDepth = 5;
-                });
-
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
