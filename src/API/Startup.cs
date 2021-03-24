@@ -14,30 +14,74 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using ITaskRepository = DAL.Interfaces.ITaskRepository;
 
 namespace API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
-
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
+       
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<TodoContext>(
+                    opt =>
+                    {
+                        opt.UseLoggerFactory(loggerFactory); //logs all sql queries.
+
+                        opt.UseSqlite("Data Source= ToDoIt");
+                    });
+            }
+            else
+            {
+                services.AddDbContext<TodoContext>
+                (opt =>
+                {
+                    opt.UseLoggerFactory(loggerFactory); //logs all sql queries.
+
+                    opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection"));
+                });
+            //    services.AddDbContext<TodoContext>(b => b
+            //        .UseSqlServer(Environment.GetEnvironmentVariable("DatabaseConnectionString"))
+            //        .LogTo(Console.WriteLine)
+            //}
+            
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "API", Version = "v1"}); });
-            services.AddDbContext<TodoContext>(b => b
-                .UseSqlServer(Environment.GetEnvironmentVariable("DatabaseConnectionString"))
-                .LogTo(Console.WriteLine)
+            
+            services.AddScoped<IAssigneeRepository, AssigneeRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddTransient<DataInit>();
+
+            services.AddCors(options =>
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    })
             );
 
-            services.AddScoped<IAssigneeRepository, AssigneeRepository>();
-            
+            services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {    // Use the default property (Pascal) casing
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.MaxDepth = 5;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
