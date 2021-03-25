@@ -7,12 +7,20 @@ pipeline {
     stages {
         stage("Build Web") {
             steps {
+                sh "dotnet restore src/WebUI/WebUI.csproj"
+
                 sh "dotnet build src/WebUI/WebUI.csproj"
+
+                sh "dotnet publish src/WebUI/WebUI.csproj"
             }
         }
         stage("Build API") {
             steps {
+                sh "dotnet restore src/API/API.csproj"
+
                 sh "dotnet build src/API/API.csproj"
+
+                sh "dotnet publish src/API/API.csproj"
             }
         }
         stage("Build database") {
@@ -37,14 +45,12 @@ pipeline {
         }
         stage("Deliver API") {
             steps {
-
-                sh "dotnet publish API.csproj -c Release -o /app/publish"
-
+                sh "docker build ./src/API -t gruppe1devops/todoit-api"
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
 				{
 					sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 				}
-				sh "docker push gruppe1devops/todoit-webui"
+				sh "docker push gruppe1devops/todoit-api"
             }
         }
         stage("Release staging environment") {
