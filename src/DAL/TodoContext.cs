@@ -5,18 +5,11 @@ namespace DAL
 {
     public class TodoContext : DbContext
     {
+
+        public TodoContext(DbContextOptions<TodoContext> options) : base(options)
+        { }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Assignee> Assignees { get; set; }
 
-        public TodoContext()
-        { }
-
-        public TodoContext(DbContextOptions<TodoContext> config) : base(config)
-        { }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer();
-        }
     }
 }
