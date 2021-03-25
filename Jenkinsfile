@@ -37,12 +37,14 @@ pipeline {
         }
         stage("Deliver API") {
             steps {
-				sh "docker build ./src/API -t gruppe1devops/todoit-webapi"
-				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+
+                sh "dotnet publish API.csproj -c Release -o /app/publish"
+
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
 				{
 					sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 				}
-				sh "docker push gruppe1devops/todoit-webapi"
+				sh "docker push gruppe1devops/todoit-webui"
             }
         }
         stage("Release staging environment") {

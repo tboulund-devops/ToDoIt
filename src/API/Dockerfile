@@ -10,7 +10,6 @@ WORKDIR /src
 COPY ["API/API.csproj", "API/"]
 COPY ["DAL/DAL.csproj", "DAL/"]
 COPY ["Model/Model.csproj", "Model/"]
-RUN dotnet restore "API/API.csproj"
 COPY . .
 WORKDIR "/src/API"
 RUN dotnet build "API.csproj" -c Release -o /app/build
