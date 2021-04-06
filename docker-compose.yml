@@ -8,15 +8,15 @@ services:
       SA_PASSWORD: HelloW0rld
       MSSQL_DB: Todoit
     ports:
-      - 34600:1234
+      - 33500:1444
   application:
     image: nadiamiteva/mysqlserver-db
     environment: 
       ASPNETCORE_ENVIRONMENT: Development
     depends_on: 
-      - mssql-db
+      - mysql-db
     ports:
-      - 3400:80 
+      - 33400:80
   flyway:
     image: flyway/flyway
     command: migrate
