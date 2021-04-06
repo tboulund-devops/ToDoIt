@@ -3,8 +3,20 @@ services:
   app-database:
     image: mcr.microsoft.com/mssql/server
     restart: always
+    volumes:
+      - ./db/data:/var/lib/sqlserver
     environment: 
       ACCEPT_EULA: "Y"
       SA_PASSWORD: HelloW0rld
     ports:
       - 33500:1234
+        
+        
+  flyway:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ./db:/flyway/sql
+      - ./db:/flyway/conf
+    depends_on:
+      - app-database
