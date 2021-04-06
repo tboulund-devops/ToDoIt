@@ -12,7 +12,6 @@ services:
   application:
     image: nadiamiteva/mysqlserver-db
     environment:
-      DatabaseConnectionString: ./db/docker
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - mysql-db
