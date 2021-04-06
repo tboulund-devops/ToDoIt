@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage("Build Web") {
             steps {
-                // echo "===== OPTIONAL: Will build the website (if needed) ====="
-                sh "dotnet build src/Todoit.sln"
+               echo "===== OPTIONAL: Will build the website (if needed) ====="
             }
         }
         stage("Build API") {
@@ -15,7 +14,7 @@ pipeline {
         }
         stage("Build database") {
             steps {
-                echo "===== OPTIONAL: Will build the database (if using a state-based approach) ====="
+                echo "===== OPTIONAL: Will build the database (if using a state-based approach)Using Flyway so No ====="
             }
         }
         stage("Test API") {
