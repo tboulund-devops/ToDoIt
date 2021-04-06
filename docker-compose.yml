@@ -11,9 +11,10 @@ services:
       - 33500:1444
   application:
     image: nadiamiteva/mysqlserver-db
-    environment: 
+    environment:
+      DatabaseConnectionString: ./db/docker
       ASPNETCORE_ENVIRONMENT: Development
-    depends_on: 
+    depends_on:
       - mysql-db
     ports:
       - 33400:80
