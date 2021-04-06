@@ -1,17 +1,22 @@
 version: '3.3'
 services:
-  app-database:
-    image: mcr.microsoft.com/mssql/server
+  mysql-db:
+    build: ./db/docker
     restart: always
-    volumes:
-      - ./db/data:/var/lib/sqlserver
-    environment: 
+    environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: HelloW0rld
+      MSSQL_DB: Todoit
     ports:
-      - 33500:1234
-        
-        
+      - 34600:1234
+  application:
+    image: nadiamiteva/mysqlserver-db
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on: 
+      - mssql-db
+    ports:
+      - 3400:80 
   flyway:
     image: flyway/flyway
     command: migrate
@@ -19,4 +24,4 @@ services:
       - ./db:/flyway/sql
       - ./db:/flyway/conf
     depends_on:
-      - app-database
+      - mysql-db
