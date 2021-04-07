@@ -3,6 +3,8 @@ services:
   mysql-db:
     build: ./db/docker
     restart: always
+    volumes:
+      - ./db/data:/var/lib/mysql
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: HelloW0rld
