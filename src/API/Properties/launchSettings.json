@@ -22,7 +22,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DatabaseConnectionString": "Server=mssql-db;Database=TodoIt;User Id=sa;Password=HelloW0rld;" // Troels added this
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
@@ -31,6 +32,11 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": { // Troels added this
+        //"ASPNETCORE_URLS": "https://+:443;http://+:80",
+        //"ASPNETCORE_HTTPS_PORT": "44330",
+        //"DatabaseConnectionString": "Server=mssql-db;Database=TodoIt;User Id=sa;Password=HelloW0rld;"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }
