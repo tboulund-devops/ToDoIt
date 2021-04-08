@@ -17,8 +17,15 @@ namespace BLL
         }
         public Assignee Create(Assignee entity)
         {
-            throw new NotImplementedException();
+            if (_repository.Get(entity.Id) != null)
+            {
+                throw new InvalidOperationException("Assignee already exists");
+            }
+            ValidationCheck(entity);
+            return _repository.Create(entity);
         }
+
+        
 
         public Assignee Delete(Assignee entity)
         {
@@ -38,6 +45,14 @@ namespace BLL
         public Assignee Update(Assignee entity)
         {
             throw new NotImplementedException();
+        }
+
+        private void ValidationCheck(Assignee entity)
+        {
+            if (String.IsNullOrEmpty(entity.Name))
+            {
+                throw new ArgumentException("Invalid Assignee");
+            }
         }
     }
 }
