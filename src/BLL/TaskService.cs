@@ -17,8 +17,15 @@ namespace BLL
 
         public Task Create(Task entity)
         {
-            throw new NotImplementedException();
+            if (_repository.Get(entity.Id) != null)
+            {
+                throw new InvalidOperationException("Task already exists");
+            }
+            ValidationCheck(entity);
+            return _repository.Create(entity);
         }
+
+        
 
         public Task Delete(Task entity)
         {
@@ -38,6 +45,22 @@ namespace BLL
         public Task Update(Task entity)
         {
             throw new NotImplementedException();
+        }
+
+        private void ValidationCheck(Task entity)
+        {
+            if (String.IsNullOrEmpty(entity.Description))
+            {
+                throw new ArgumentException("Invalid Task");
+            }
+            if (entity.Assignee == null)
+            {
+                throw new ArgumentException("Invalid Task");
+            }
+            if (entity.DueDate == null)
+            {
+                throw new ArgumentException("Invalid Task");
+            }
         }
     }
 }

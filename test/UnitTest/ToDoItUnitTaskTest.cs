@@ -285,7 +285,7 @@ namespace UnitTest
             var assignee = new Assignee()
             {
                 Id = 1,
-                Name = "John Doe"
+                Name = null
             };
 
             var service = new AssigneeService(_AssigneeRepoMock.Object);
