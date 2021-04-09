@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,9 @@ namespace DAL
 
         public Assignee Get(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Assignees
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<Assignee> Read()
