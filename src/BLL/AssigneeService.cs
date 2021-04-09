@@ -38,7 +38,7 @@ namespace BLL
 
         public Assignee Get(int id)
         {
-            throw new NotImplementedException();
+            return _repository.Get(id);
         }
 
         public List<Assignee> Read()
