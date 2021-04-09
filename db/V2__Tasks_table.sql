@@ -6,6 +6,6 @@ CREATE TABLE [dbo].[Tasks]
   [IsCompleted] BIT NOT NULL,
   [DueDate] DATETIME2, 
   CONSTRAINT [PK_Task] PRIMARY KEY (Id),
-  CONSTRAINT [FK_AssigneeId] FOREIGN KEY (AssigneeId) REFERENCES [dbo].[Assignee](Id)
+  CONSTRAINT [FK_AssigneeId] FOREIGN KEY (AssigneeId) REFERENCES [dbo].[Assignees](Id)
   ON DELETE CASCADE
 )
