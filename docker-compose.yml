@@ -21,11 +21,21 @@ services:
     depends_on: 
       - database
       
-  backend:
-    image: gruppe1devops/todoit-api
-    environment: 
-      ASPNETCORE_ENVIRONMENT: Development
-    depends_on: 
-      - database
-    ports: 
-      - 16000:80
+      
+#  backend:
+#    image: gruppe1devops/todoit-api
+#    environment: 
+#      ASPNETCORE_ENVIRONMENT: Development
+#    depends_on: 
+#      - database
+#    ports: 
+#      - 16000:???? // <--- skift backend port
+#      
+#   frontend:
+#    image: gruppe1devops/todoit-webui
+#    environment: 
+#      ASPNETCORE_ENVIRONMENT: Development
+#    depends_on: 
+#      - backend
+#    ports: 
+#      - 17000:???? //  <--- skift frontend port

@@ -48,8 +48,10 @@ pipeline {
         stage("Release staging environment") {
             steps {
 				sh "docker-compose pull"
-				sh "docker-compose up -d application app-database"
+				sh "docker-compose up -d database"
 				sh "docker-compose up flyway"
+				// sh "docker-compose up -d backend"
+				// sh "docker-compose up -d frontend"
             }
         }
         stage("Automated acceptance test") {
