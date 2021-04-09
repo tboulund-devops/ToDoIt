@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DAL
 {
@@ -21,7 +22,14 @@ namespace DAL
 
         public Assignee Delete(Assignee entity)
         {
-            throw new NotImplementedException();
+            var assignee = _ctx.Assignees.FirstOrDefault(x => x.Id == entity.Id);
+            if (assignee == null)
+            {
+                throw new ArgumentException("Assignee does not exist");
+            }
+            var deletedAssignee = _ctx.Assignees.Remove(assignee);
+            _ctx.SaveChanges();
+            return deletedAssignee.Entity;
         }
 
         public Assignee Get(int id)
