@@ -1,6 +1,8 @@
-﻿using Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DAL
 {
@@ -12,6 +14,7 @@ namespace DAL
         {
             _ctx = ctx;
         }
+
         public Assignee Create(Assignee entity)
         {
             var assignee = _ctx.Assignees.Add(entity);
@@ -21,20 +24,35 @@ namespace DAL
 
         public Assignee Delete(Assignee entity)
         {
-            throw new NotImplementedException();
+            var assignee = _ctx.Assignees.FirstOrDefault(x => x.Id == entity.Id);
+            if (assignee == null)
+            {
+                throw new ArgumentException("Assignee does not exist");
+            }
+            var deletedAssignee = _ctx.Assignees.Remove(assignee);
+            _ctx.SaveChanges();
+            return deletedAssignee.Entity;
         }
 
         public Assignee Get(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Assignees
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<Assignee> Read()
         {
-            throw new NotImplementedException();
+            return _ctx.Assignees.AsNoTracking().ToList();
         }
 
         public Assignee Update(Assignee entity)
+        {
+            _ctx.Entry(entity).State = EntityState.Modified;
+            _ctx.SaveChanges();
+            return entity;
+        }
+        public Assignee AssignAssignee(Assignee assignee, Task task)
         {
             throw new NotImplementedException();
         }

@@ -29,22 +29,27 @@ namespace BLL
 
         public Assignee Delete(Assignee entity)
         {
-            throw new NotImplementedException();
+            if (_repository.Get(entity.Id) != null)
+            {
+                return _repository.Delete(entity);
+            }
+            throw new InvalidOperationException("Assignee not found");
         }
 
         public Assignee Get(int id)
         {
-            throw new NotImplementedException();
+            return _repository.Get(id);
         }
 
         public List<Assignee> Read()
         {
-            throw new NotImplementedException();
+            return _repository.Read();
         }
 
         public Assignee Update(Assignee entity)
         {
-            throw new NotImplementedException();
+            ValidationCheck(entity);
+            return _repository.Update(entity);
         }
 
         private void ValidationCheck(Assignee entity)
