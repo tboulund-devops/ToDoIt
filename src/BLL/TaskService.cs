@@ -50,6 +50,11 @@ namespace BLL
             return _repository.Update(entity);
         }
 
+        public Assignee AddAssigneeToTask(Assignee assignee, Task task)
+        {
+            return _repository.AssignAssignee(assignee, task);
+        }
+
         private void ValidationCheck(Task entity)
         {
             if (String.IsNullOrEmpty(entity.Description))

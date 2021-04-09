@@ -14,6 +14,7 @@ namespace DAL
         {
             _ctx = ctx;
         }
+
         public Assignee Create(Assignee entity)
         {
             var assignee = _ctx.Assignees.Add(entity);
@@ -50,6 +51,10 @@ namespace DAL
             _ctx.Entry(entity).State = EntityState.Modified;
             _ctx.SaveChanges();
             return entity;
+        }
+        public Assignee AssignAssignee(Assignee assignee, Task task)
+        {
+            throw new NotImplementedException();
         }
     }
 }
