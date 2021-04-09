@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,15 @@ namespace DAL
             _ctx.Entry(entity).State = EntityState.Modified;
             _ctx.SaveChanges();
             return entity;
+        }
+
+        public Assignee AssignAssignee(Assignee assignee, Task task)
+        {
+            task.Assignee = assignee;
+
+            _ctx.Entry(task).State = EntityState.Modified;
+            _ctx.SaveChanges();
+            return assignee;
         }
     }
 }
