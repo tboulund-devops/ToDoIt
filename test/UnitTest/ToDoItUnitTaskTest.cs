@@ -357,10 +357,10 @@ namespace UnitTest
             _AssigneeRepoMock.Setup(repo => repo.Get(It.Is<int>(z => z == assignee.Id))).Returns(() => assignee);
 
             // ACT
-            var ex = Assert.Throws<InvalidOperationException>(() => service.Update(assignee));
+            var ex = Assert.Throws<ArgumentException>(() => service.Update(assignee));
 
             // ASSERT
-            Assert.Equal("Invalid Task", ex.Message);
+            Assert.Equal("Invalid Assignee", ex.Message);
             _AssigneeRepoMock.Verify(repo => repo.Update(It.Is<Assignee>(a => a == assignee)), Times.Never);
         }
         [Theory]
