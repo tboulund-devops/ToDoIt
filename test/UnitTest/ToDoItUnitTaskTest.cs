@@ -174,7 +174,7 @@ namespace UnitTest
             _TaskRepoMock.Setup(repo => repo.Get(It.Is<int>(z => z == task.Id))).Returns(() => task);
 
             // ACT
-            var ex = Assert.Throws<InvalidOperationException>(() => service.Update(task));
+            var ex = Assert.Throws<ArgumentException>(() => service.Update(task));
 
             // ASSERT
             Assert.Equal("Invalid Task", ex.Message);
@@ -349,7 +349,7 @@ namespace UnitTest
             var assignee = new Assignee()
             {
                 Id = 1,
-                Name = "John Doe"
+                Name = ""
             };
 
             var service = new AssigneeService(_AssigneeRepoMock.Object);
@@ -357,10 +357,10 @@ namespace UnitTest
             _AssigneeRepoMock.Setup(repo => repo.Get(It.Is<int>(z => z == assignee.Id))).Returns(() => assignee);
 
             // ACT
-            var ex = Assert.Throws<InvalidOperationException>(() => service.Update(assignee));
+            var ex = Assert.Throws<ArgumentException>(() => service.Update(assignee));
 
             // ASSERT
-            Assert.Equal("Invalid Task", ex.Message);
+            Assert.Equal("Invalid Assignee", ex.Message);
             _AssigneeRepoMock.Verify(repo => repo.Update(It.Is<Assignee>(a => a == assignee)), Times.Never);
         }
         [Theory]
