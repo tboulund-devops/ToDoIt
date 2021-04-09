@@ -47,7 +47,9 @@ namespace DAL
 
         public Assignee Update(Assignee entity)
         {
-            throw new NotImplementedException();
+            _ctx.Entry(entity).State = EntityState.Modified;
+            _ctx.SaveChanges();
+            return entity;
         }
     }
 }

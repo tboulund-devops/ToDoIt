@@ -48,7 +48,8 @@ namespace BLL
 
         public Assignee Update(Assignee entity)
         {
-            throw new NotImplementedException();
+            ValidationCheck(entity);
+            return _repository.Update(entity);
         }
 
         private void ValidationCheck(Assignee entity)
