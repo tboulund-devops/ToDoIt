@@ -47,6 +47,11 @@ namespace BLL
             throw new NotImplementedException();
         }
 
+        public Assignee AddAssigneeToTask(Assignee assignee, Task task)
+        {
+            return _repository.AssignAssignee(assignee, task);
+        }
+
         private void ValidationCheck(Task entity)
         {
             if (String.IsNullOrEmpty(entity.Description))
