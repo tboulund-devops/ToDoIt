@@ -15,6 +15,16 @@ namespace BLL
             _repository = repository ?? throw new ArgumentException("Repository is missing");
         }
 
+        public List<Task> Search(string searchText)
+        {
+            if (searchText == null)
+            {
+                return Read();
+            }
+            
+            return _repository.Search(searchText);
+        }
+
         public Task Create(Task entity)
         {
             if (_repository.Get(entity.Id) != null)

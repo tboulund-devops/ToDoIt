@@ -40,6 +40,11 @@ namespace DAL
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Task> Search(string searchText)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Assignee> Read()
         {
             return _ctx.Assignees.AsNoTracking().ToList();

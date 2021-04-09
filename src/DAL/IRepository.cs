@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Model;
 
 namespace DAL
 {
@@ -12,5 +13,6 @@ namespace DAL
         public T Update(T entity);
         public T Delete(T entity);
         public T Get(int id);
+        List<Task> Search(string searchText);
     }
 }

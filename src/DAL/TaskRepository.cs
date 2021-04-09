@@ -41,6 +41,11 @@ namespace DAL
                 .FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Task> Search(string searchText)
+        {
+            return _ctx.Tasks.Where(x => x.Description.Contains(searchText)).ToList();
+        }
+
         public List<Task> Read()
         {
             return _ctx.Tasks.AsNoTracking().ToList();

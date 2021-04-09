@@ -158,6 +158,30 @@ namespace UnitTest
         }
 
         [Fact]
+        public void SearchTaskWithValidInput()
+        {
+            // ARRANGE
+            var task = new Task()
+            {
+                Assignee = new Assignee(),
+                Id = 1,
+                Description = "description",
+                DueDate = DateTime.Now,
+                IsCompleted = false
+            };
+            
+            var service = new TaskService(_TaskRepoMock.Object);
+            
+            _TaskRepoMock.Setup(repo => repo.Get(It.Is<int>(z => z == task.Id))).Returns(() => task);
+
+            // ACT
+            var foundTasks = service.Search("description");
+            
+            // ASSERT
+            _TaskRepoMock.Verify(repo => repo.Search("description"), Times.Once);
+        }
+
+        [Fact]
         public void UpdateTaskWithInvalidInputTest()
         {
             // ARRANGE
@@ -190,21 +214,21 @@ namespace UnitTest
             var _tasks = new List<Task>()
             {
                 new Task()
-            {
-                Assignee = new Assignee(),
-                Id = 1,
-                Description = "Some description",
-                DueDate = DateTime.Now,
-                IsCompleted = false
-            },
-            new Task()
-            {
-                Assignee = new Assignee(),
-                Id = 2,
-                Description = "Some description",
-                DueDate = DateTime.Now,
-                IsCompleted = false
-            }
+                {
+                    Assignee = new Assignee(),
+                    Id = 1,
+                    Description = "Some description",
+                    DueDate = DateTime.Now,
+                    IsCompleted = false
+                },
+                new Task()
+                {
+                    Assignee = new Assignee(),
+                    Id = 2,
+                    Description = "Some description",
+                    DueDate = DateTime.Now,
+                    IsCompleted = false
+                }
         };
 
             var service = new TaskService(_TaskRepoMock.Object);
