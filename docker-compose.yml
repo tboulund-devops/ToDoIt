@@ -1,7 +1,7 @@
 version: "3.3"
 
 services:
-  app-database:
+  database:
     build: ./db/docker
     #image: mcr.microsoft.com/mssql/server
     restart: always
@@ -19,4 +19,13 @@ services:
       - ./db:/flyway/sql
       - ./db:/flyway/conf
     depends_on: 
-      - app-database
+      - database
+      
+  backend:
+    image: gruppe1devops/todoit-api
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on: 
+      - database
+    ports: 
+      - 16000:80
