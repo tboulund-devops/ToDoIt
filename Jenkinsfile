@@ -7,20 +7,12 @@ pipeline {
     stages {
         stage("Build Web") {
             steps {
-                sh "dotnet restore src/WebUI/WebUI.csproj"
-
                 sh "dotnet build src/WebUI/WebUI.csproj"
-
-                sh "dotnet publish src/WebUI/WebUI.csproj"
             }
         }
         stage("Build API") {
             steps {
-                sh "dotnet restore src/API/API.csproj"
-
                 sh "dotnet build src/API/API.csproj"
-
-                sh "dotnet publish src/API/API.csproj"
             }
         }
         stage("Build database") {
@@ -55,7 +47,9 @@ pipeline {
         }
         stage("Release staging environment") {
             steps {
-                echo "===== REQUIRED: Will use Docker Compose to spin up a test environment ====="
+				sh "docker-compose pull"
+				sh "docker-compose up -d application app-database"
+				sh "docker-compose up flyway"
             }
         }
         stage("Automated acceptance test") {
