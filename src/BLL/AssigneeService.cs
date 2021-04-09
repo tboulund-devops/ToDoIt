@@ -29,7 +29,11 @@ namespace BLL
 
         public Assignee Delete(Assignee entity)
         {
-            throw new NotImplementedException();
+            if (_repository.Get(entity.Id) != null)
+            {
+                return _repository.Delete(entity);
+            }
+            throw new InvalidOperationException("Assignee not found");
         }
 
         public Assignee Get(int id)
