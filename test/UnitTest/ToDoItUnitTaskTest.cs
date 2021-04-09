@@ -174,7 +174,7 @@ namespace UnitTest
             _TaskRepoMock.Setup(repo => repo.Get(It.Is<int>(z => z == task.Id))).Returns(() => task);
 
             // ACT
-            var ex = Assert.Throws<InvalidOperationException>(() => service.Update(task));
+            var ex = Assert.Throws<ArgumentException>(() => service.Update(task));
 
             // ASSERT
             Assert.Equal("Invalid Task", ex.Message);

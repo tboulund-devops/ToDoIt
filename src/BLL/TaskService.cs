@@ -24,27 +24,30 @@ namespace BLL
             ValidationCheck(entity);
             return _repository.Create(entity);
         }
-
         
-
         public Task Delete(Task entity)
         {
-            throw new NotImplementedException();
+            if (_repository.Get(entity.Id) != null)
+            {
+                return _repository.Delete(entity);
+            }
+            throw new InvalidOperationException("Task not found");
         }
 
         public Task Get(int id)
         {
-            throw new NotImplementedException();
+            return _repository.Get(id);
         }
 
         public List<Task> Read()
         {
-            throw new NotImplementedException();
+            return _repository.Read();
         }
 
         public Task Update(Task entity)
         {
-            throw new NotImplementedException();
+            ValidationCheck(entity);
+            return _repository.Update(entity);
         }
 
         private void ValidationCheck(Task entity)

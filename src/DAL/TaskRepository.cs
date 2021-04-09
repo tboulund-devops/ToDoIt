@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -22,22 +23,34 @@ namespace DAL
 
         public Task Delete(Task entity)
         {
-            throw new NotImplementedException();
+            var task = _ctx.Tasks.FirstOrDefault(x => x.Id == entity.Id);
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist");
+            }
+
+            var deletedTask = _ctx.Tasks.Remove(task);
+            _ctx.SaveChanges();
+            return deletedTask.Entity;
         }
 
         public Task Get(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Tasks
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public List<Task> Read()
         {
-            throw new NotImplementedException();
+            return _ctx.Tasks.AsNoTracking().ToList();
         }
 
         public Task Update(Task entity)
         {
-            throw new NotImplementedException();
+            _ctx.Entry(entity).State = EntityState.Modified;
+            _ctx.SaveChanges();
+            return entity;
         }
     }
 }
