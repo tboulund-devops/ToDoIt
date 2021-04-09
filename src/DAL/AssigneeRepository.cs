@@ -42,7 +42,7 @@ namespace DAL
 
         public List<Assignee> Read()
         {
-            throw new NotImplementedException();
+            return _ctx.Assignees.AsNoTracking().ToList();
         }
 
         public Assignee Update(Assignee entity)

@@ -43,7 +43,7 @@ namespace BLL
 
         public List<Assignee> Read()
         {
-            throw new NotImplementedException();
+            return _repository.Read();
         }
 
         public Assignee Update(Assignee entity)
