@@ -1,0 +1,41 @@
+version: "3.3"
+
+services:
+  database:
+    build: ./db/docker
+    #image: mcr.microsoft.com/mssql/server
+    restart: always
+    environment: 
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: HelloW0rld
+      MSSQL_DB: ToDoIt
+    ports:
+      - 15000:1433
+
+  flyway:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ./db:/flyway/sql
+      - ./db:/flyway/conf
+    depends_on: 
+      - database
+      
+      
+#  backend:
+#    image: gruppe1devops/todoit-api
+#    environment: 
+#      ASPNETCORE_ENVIRONMENT: Development
+#    depends_on: 
+#      - database
+#    ports: 
+#      - 16000:???? // <--- skift backend port
+#      
+#   frontend:
+#    image: gruppe1devops/todoit-webui
+#    environment: 
+#      ASPNETCORE_ENVIRONMENT: Development
+#    depends_on: 
+#      - backend
+#    ports: 
+#      - 17000:???? //  <--- skift frontend port

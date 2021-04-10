@@ -1,14 +1,18 @@
 pipeline {
     agent any
+	triggers {
+		cron 'H * * * *'
+		pollSCM 'H/3 * * * *'
+	}
     stages {
         stage("Build Web") {
             steps {
-                echo "===== OPTIONAL: Will build the website (if needed) ====="
+                sh "dotnet build src/WebUI/WebUI.csproj"
             }
         }
         stage("Build API") {
             steps {
-                echo "===== REQUIRED: Will build the API project ====="
+                sh "dotnet build src/API/API.csproj"
             }
         }
         stage("Build database") {
@@ -18,22 +22,36 @@ pipeline {
         }
         stage("Test API") {
             steps {
-                echo "===== REQUIRED: Will execute unit tests of the API project ====="
+                sh "dotnet test test/UnitTest/UnitTest.csproj"
             }
         }
         stage("Deliver Web") {
             steps {
-                echo "===== REQUIRED: Will deliver the website to Docker Hub ====="
+				sh "docker build ./src/WebUI -t gruppe1devops/todoit-webui"
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+				{
+					sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+				}
+				sh "docker push gruppe1devops/todoit-webui"
             }
         }
         stage("Deliver API") {
             steps {
-                echo "===== REQUIRED: Will deliver the API to Docker Hub ====="
+                sh "docker build ./src/API -t gruppe1devops/todoit-api"
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'DockerHubID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+				{
+					sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+				}
+				sh "docker push gruppe1devops/todoit-api"
             }
         }
         stage("Release staging environment") {
             steps {
-                echo "===== REQUIRED: Will use Docker Compose to spin up a test environment ====="
+				sh "docker-compose pull"
+				sh "docker-compose up -d database"
+				sh "docker-compose up flyway"
+				// sh "docker-compose up -d backend"
+				// sh "docker-compose up -d frontend"
             }
         }
         stage("Automated acceptance test") {
