@@ -9,6 +9,13 @@ namespace API.Controllers
     [Route("[controller]")]
     public class TaskController : Controller
     {
+
+        private readonly IService<Task> _service;
+
+        private TaskController()
+        {
+
+        }
         [HttpGet]
         public IEnumerable<Task> Get(string searchTerm)
         {
